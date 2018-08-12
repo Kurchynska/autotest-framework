@@ -1,0 +1,6 @@
+out/*
+target/*
+*.idea
+*.iml
+test.properties
+chromedriver.exe
