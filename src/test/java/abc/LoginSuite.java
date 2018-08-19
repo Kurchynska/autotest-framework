@@ -3,106 +3,54 @@ package abc;
 import abc.po.LoginPage;
 import abc.po.MainPage;
 import abc.po.WishListPage;
+import abc.utils.DriverManager;
 import abc.utils.PropertiesManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
 
-public class LoginSuite {
+public class LoginSuite extends AbstractTest {
 
-    private LoginPage loginPage;
-    private MainPage mainPage;
-    private WishListPage wishListPage;
-    private WebDriver driver;
-    private PropertiesManager propertiesManager = new PropertiesManager();
-
+    private WebDriver driver = DriverManager.initBrowser("chrome");
+    private LoginPage loginPage = new LoginPage(driver);
+    private MainPage mainPage = new MainPage(driver) ;
+    private WishListPage wishListPage = new WishListPage(driver) ;
 
     /**
      * Check user can get to login page from main page
      */
-    @BeforeMethod
-    public void setUpBrowserBeforeTest(){
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        loginPage = new LoginPage(driver);
-        mainPage = new MainPage(driver);
-        wishListPage = new WishListPage(driver);
-    }
-    @AfterMethod
-    public  void closeBrowserAfterTest(){
-        driver.quit();
-    }
-
     @Test
     public void checkNavigationToLoginPage(){
-        mainPage.openLandingPage();
-        mainPage.clickOnAccountIcon();
-        mainPage.clickOnSingInLink();
+        this.goToMyAccountPage();
         Assert.assertEquals(loginPage.getTextFromLoginTabTitle(),"SIGN IN WITH EMAIL");
     }
 
     /**
      * Check user can login
      */
-
     @Test
     public void checkLoginToAccount(){
-        mainPage.openLandingPage();
-        mainPage.clickOnAccountIcon();
-        mainPage.clickOnSingInLink();
-        loginPage.fillLoginField(propertiesManager.getDataFromPropertyFile().getProperty("email"));
-        loginPage.fillPasswordField(propertiesManager.getDataFromPropertyFile().getProperty("password"));
+        this.goToMyAccountPage();
+        loginPage.fillLoginField(PropertiesManager.getPropertyByKey("email"));
+        loginPage.fillPasswordField(PropertiesManager.getPropertyByKey("password"));
         loginPage.clickOnSigninButton();
         mainPage.clickOnAccountIcon();
         Assert.assertEquals(mainPage.getTextFromUserGreatings(), "Hi Anastasiia");
+        this.SingOutAfterSingIn();
     }
 
     /**
-     *  Assert error message will be shown in case not valid email is set
+     *  Check if correct error message is shown in a case of invalid e-mail input
      */
-
-    @Test
-    public void checkLoginWithInvalidEmail(){
-        mainPage.openLandingPage();
-        mainPage.clickOnAccountIcon();
-        mainPage.clickOnMyAccountPageLink();
-        loginPage.fillLoginField("test-fake@fake.com");
-        loginPage.fillPasswordField(propertiesManager.getDataFromPropertyFile().getProperty("password"));
-        loginPage.clickOnSigninButton();
-        Assert.assertTrue(loginPage.assertLoginErrorMessageDisplayed());
-    }
-
-    /**
-     * Assert error message will be shown in case not valid password is set
-     */
-
-    @Test
-    public void checkLoginWithInvalidPassword(){
-        mainPage.openLandingPage();
-        mainPage.clickOnAccountIcon();
-        mainPage.clickOnMyAccountPageLink();
-        loginPage.fillLoginField(propertiesManager.getDataFromPropertyFile().getProperty("email"));
-        loginPage.fillPasswordField("12345");
-        loginPage.clickOnSigninButton();
-        Assert.assertTrue(loginPage.assertLoginErrorMessageDisplayed());
-    }
-
-    /**
-     * Assert error message will be shown in case not valid login and password is set
-     */
-
     @Test
     public void checkLoginWithInvalidCredentials(){
-        mainPage.openLandingPage();
-        mainPage.clickOnAccountIcon();
-        mainPage.clickOnMyAccountPageLink();
+        this.goToMyAccountPage();
         loginPage.fillLoginField("test-fake@fake.com");
-        loginPage.fillPasswordField("123456789");
+        loginPage.fillPasswordField("p123456");
         loginPage.clickOnSigninButton();
-        Assert.assertTrue(loginPage.assertLoginErrorMessageDisplayed());
+        Assert.assertTrue(loginPage.getLoginErrorMessageBlock().isDisplayed());
     }
 
     /**
@@ -110,25 +58,31 @@ public class LoginSuite {
      */
     @Test
     public void checkLoginFromWishListPage(){
-        mainPage.openLandingPage();
+        mainPage.openMainPage();
         mainPage.clickOnWishListIcon();
         wishListPage.clickOnWishListLoginButton();
-        loginPage.fillLoginField("kyrchinskaa@gmail.com");
-        loginPage.fillPasswordField("Password4Nastya!");
+        loginPage.fillLoginField(PropertiesManager.getPropertyByKey("email"));
+        loginPage.fillPasswordField(PropertiesManager.getPropertyByKey("password"));
         loginPage.clickOnSigninButton();
         wishListPage.clickOnAccountIcon();
         Assert.assertEquals(mainPage.getTextFromUserGreatings(), "Hi Anastasiia");
+        this.SingOutAfterSingIn();
+    }
+
+    @AfterSuite
+    public void quitDriverAfterSuite() {
+        driver.quit();
+    }
+
+    private void goToMyAccountPage(){
+        mainPage.openMainPage();
+        mainPage.clickOnAccountIcon();
+        mainPage.clickOnSingInLink();
+    }
+
+    private void SingOutAfterSingIn(){
+        mainPage.openMainPage();
+        mainPage.clickOnAccountIcon();
+        mainPage.clickOnSingOut();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

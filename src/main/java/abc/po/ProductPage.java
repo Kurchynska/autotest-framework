@@ -7,11 +7,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import java.util.concurrent.TimeUnit;
+
 @Data
 @NoArgsConstructor
 public class ProductPage extends AbstractPage {
-
-    private ProductCategoryPage productCategoryPage = new ProductCategoryPage(driver);
 
     @FindBy(how = How.CSS, using = "a[class='save-button-link']")
     private WebElement addToWishListButton;
@@ -23,15 +23,9 @@ public class ProductPage extends AbstractPage {
         super(driver);
     }
 
-    public void openFirstProductPage() {
-        this.openLandingPage();
-        this.clickOnClothingMenuButton();
-        this.clickOnNewInClothingMenuButton();
-        productCategoryPage.clickOnFirstProductOnCategoryPage();
-    }
-
     public void clickOnAddToWishListButton() {
         addToWishListButton.click();
+        super.getDriver().manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
     }
 
     public String grabProductName() {

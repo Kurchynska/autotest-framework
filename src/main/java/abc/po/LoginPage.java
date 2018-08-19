@@ -52,11 +52,4 @@ public class LoginPage {
         signinButton.click();
         driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
     }
-
-    public boolean assertLoginErrorMessageDisplayed(){
-        return loginErrorMessageBlock.isDisplayed();
-    }
-
-
-
 }
