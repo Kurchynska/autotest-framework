@@ -1,6 +1,5 @@
 package abc.po;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -10,11 +9,23 @@ public class ProductCategoryPage extends AbstractPage {
     @FindBy(how = How.XPATH, using = ".//*[@data-auto-id='productList']//a")
     private WebElement firstProductOnCategoryPage;
 
-    public void clickOnFirstProductOnCategoryPage(){
+    @FindBy(how = How.XPATH, using = ".//*[@data-auto-id='productList']//button")
+    private WebElement wishListFirstProduct;
+
+    @FindBy(how = How.XPATH, using = ".//*[@data-auto-id='productTileDescription']/div/div/p")
+    private WebElement titleFistProductInCategory;
+
+    public String grabTextProductTitle(){
+        return titleFistProductInCategory.getText();
+    }
+
+    public void clickOnFirstProductOnCategoryPage() {
+        waitAllLoad(5);
         firstProductOnCategoryPage.click();
     }
 
-    public ProductCategoryPage(WebDriver driver){
-        super(driver);
+    public void clickOnWishListFirstProduct() {
+        wishListFirstProduct.click();
+        waitAllLoad(15);
     }
 }

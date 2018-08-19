@@ -1,20 +1,10 @@
 package abc.po;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 
-import java.util.concurrent.TimeUnit;
-
-@Data
-@NoArgsConstructor
-public class LoginPage {
-
-    private WebDriver driver;
+public class LoginPage extends AbstractPage {
 
     @FindBy(how = How.NAME, using = "Username")
     private WebElement loginField;
@@ -31,11 +21,6 @@ public class LoginPage {
     @FindBy(how = How.CLASS_NAME, using = "error-block")
     private  WebElement loginErrorMessageBlock;
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
-
     public String getTextFromLoginTabTitle(){
         return loginTabTitle.getText();
     }
@@ -50,13 +35,10 @@ public class LoginPage {
 
     public void clickOnSigninButton(){
         signinButton.click();
-        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        waitAllLoad(5);
     }
 
-    public boolean assertLoginErrorMessageDisplayed(){
-        return loginErrorMessageBlock.isDisplayed();
+    public WebElement getLoginErrorMessageBlock(){
+        return loginErrorMessageBlock;
     }
-
-
-
 }
