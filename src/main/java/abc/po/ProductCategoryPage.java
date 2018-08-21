@@ -6,13 +6,13 @@ import org.openqa.selenium.support.How;
 
 public class ProductCategoryPage extends AbstractPage {
 
-    @FindBy(how = How.XPATH, using = ".//*[@data-auto-id='productList']//a")
+    @FindBy(how = How.XPATH, using = ".//div[@data-auto-id='productList']//a")
     private WebElement firstProductOnCategoryPage;
 
-    @FindBy(how = How.XPATH, using = ".//*[@data-auto-id='productList']//button")
+    @FindBy(how = How.XPATH, using = ".//div[@data-auto-id='productList']//button")
     private WebElement wishListFirstProduct;
 
-    @FindBy(how = How.XPATH, using = ".//*[@data-auto-id='productTileDescription']/div/div/p")
+    @FindBy(how = How.XPATH, using = ".//div[@data-auto-id='productTileDescription']/div/div/p")
     private WebElement titleFistProductInCategory;
 
     public String grabTextProductTitle(){
@@ -26,6 +26,6 @@ public class ProductCategoryPage extends AbstractPage {
 
     public void clickOnWishListFirstProduct() {
         wishListFirstProduct.click();
-        waitAllLoad(15);
+        waitAllLoad(5);
     }
 }

@@ -1,7 +1,7 @@
 package abc;
 
 import abc.po.*;
-import abc.utils.PropertiesManager;
+import static abc.utils.PropertiesManager.getPropertyByKey;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -21,8 +21,8 @@ public class WishListSuite {
         mainPage.openMainPage();
         mainPage.clickOnWishListIcon();
         wishListPage.clickOnWishListLoginButton();
-        loginPage.fillLoginField(PropertiesManager.getPropertyByKey("email"));
-        loginPage.fillPasswordField(PropertiesManager.getPropertyByKey("password"));
+        loginPage.fillLoginField(getPropertyByKey("email"));
+        loginPage.fillPasswordField(getPropertyByKey("password"));
         loginPage.clickOnSigninButton();
     }
 

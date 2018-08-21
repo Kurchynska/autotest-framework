@@ -25,18 +25,18 @@ public class DriverManager {
     private static WebDriver initChromeDriver() {
         if(driver==null)
             driver = new ChromeDriver();
-        configureBrowser();
+        configureBrowser(driver);
         return driver;
     }
 
     private static WebDriver initFireFoxBrowser() {
         if(driver==null)
             driver = new FirefoxDriver();
-        configureBrowser();
+        configureBrowser(driver);
         return driver;
     }
 
-    private static void configureBrowser() {
+    private static void configureBrowser(WebDriver driver) {
         driver.manage().window().maximize();
     }
 

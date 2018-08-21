@@ -3,7 +3,7 @@ package abc;
 import abc.po.LoginPage;
 import abc.po.MainPage;
 import abc.po.WishListPage;
-import abc.utils.PropertiesManager;
+import static abc.utils.PropertiesManager.getPropertyByKey;
 import org.testng.Assert;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.Test;
@@ -29,12 +29,12 @@ public class LoginSuite extends AbstractTest {
     @Test
     public void checkLoginToAccount(){
         goToMyAccountPage();
-        loginPage.fillLoginField(PropertiesManager.getPropertyByKey("email"));
-        loginPage.fillPasswordField(PropertiesManager.getPropertyByKey("password"));
+        loginPage.fillLoginField(getPropertyByKey("email"));
+        loginPage.fillPasswordField(getPropertyByKey("password"));
         loginPage.clickOnSigninButton();
         mainPage.clickOnAccountIcon();
-        Assert.assertEquals(mainPage.getTextFromUserGreatings(), "Hi Anastasiia");
-        singOutAfterSingIn();
+        Assert.assertEquals(mainPage.getTextFromUserGreatings(), "Hi " + getPropertyByKey("userName"));
+        singOutAfterMethod();
     }
 
     /**
@@ -43,8 +43,8 @@ public class LoginSuite extends AbstractTest {
     @Test
     public void checkLoginWithInvalidCredentials(){
         goToMyAccountPage();
-        loginPage.fillLoginField("test-fake@fake.com");
-        loginPage.fillPasswordField("p123456");
+        loginPage.fillLoginField(getPropertyByKey("invalidEmail"));
+        loginPage.fillPasswordField(getPropertyByKey("invalidPassword"));
         loginPage.clickOnSigninButton();
         Assert.assertTrue(loginPage.getLoginErrorMessageBlock().isDisplayed());
     }
@@ -57,12 +57,18 @@ public class LoginSuite extends AbstractTest {
         mainPage.openMainPage();
         mainPage.clickOnWishListIcon();
         wishListPage.clickOnWishListLoginButton();
-        loginPage.fillLoginField(PropertiesManager.getPropertyByKey("email"));
-        loginPage.fillPasswordField(PropertiesManager.getPropertyByKey("password"));
+        loginPage.fillLoginField(getPropertyByKey("email"));
+        loginPage.fillPasswordField(getPropertyByKey("password"));
         loginPage.clickOnSigninButton();
         wishListPage.clickOnAccountIcon();
-        Assert.assertEquals(mainPage.getTextFromUserGreatings(), "Hi Anastasiia");
-        singOutAfterSingIn();
+        Assert.assertEquals(mainPage.getTextFromUserGreatings(), "Hi " + getPropertyByKey("userName"));
+        singOutAfterMethod();
+    }
+
+    private void singOutAfterMethod(){
+        mainPage.openMainPage();
+        mainPage.clickOnAccountIcon();
+        mainPage.clickOnSingOut();
     }
 
     @AfterSuite
@@ -74,11 +80,5 @@ public class LoginSuite extends AbstractTest {
         mainPage.openMainPage();
         mainPage.clickOnAccountIcon();
         mainPage.clickOnSingInLink();
-    }
-
-    private void singOutAfterSingIn(){
-        mainPage.openMainPage();
-        mainPage.clickOnAccountIcon();
-        mainPage.clickOnSingOut();
     }
 }

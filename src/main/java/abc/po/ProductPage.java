@@ -9,7 +9,7 @@ public class ProductPage extends AbstractPage {
     @FindBy(how = How.CSS, using = "a[class='save-button-link']")
     private WebElement addToWishListButton;
 
-    @FindBy(how = How.XPATH, using = ".//*[@class='product-hero']/h1")
+    @FindBy(how = How.XPATH, using = ".//div[@class='product-hero']/h1")
     private WebElement productTitle;
 
     public void clickOnAddToWishListButton() {

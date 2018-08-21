@@ -2,6 +2,8 @@ package abc.utils;
 
 import lombok.Data;
 import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -23,7 +25,7 @@ public class PropertiesManager {
         try (InputStream input = PropertiesManager.class.getClassLoader().getResourceAsStream(propertyFile)) {
             property.load(input);
         } catch (IOException e) {
-            log.severe("Can`t read file");
+            log.severe(String.format("Can't read file %s", propertyFile));
             e.printStackTrace();
         }
         return property;
