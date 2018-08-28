@@ -15,7 +15,7 @@ public class ProductCategoryPage extends AbstractPage {
     @FindBy(how = How.XPATH, using = ".//div[@data-auto-id='productTileDescription']/div/div/p")
     private WebElement titleFistProductInCategory;
 
-    public String grabTextProductTitle(){
+    public String grabTextProductTitle() {
         return titleFistProductInCategory.getText();
     }
 

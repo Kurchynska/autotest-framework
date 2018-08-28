@@ -17,7 +17,7 @@ public class WishListSuite {
     private ProductCategoryPage productCategoryPage = new ProductCategoryPage();
 
     @BeforeMethod
-    public void singInBeforeTest(){
+    public void singInBeforeTest() {
         mainPage.openMainPage();
         mainPage.clickOnWishListIcon();
         wishListPage.clickOnWishListLoginButton();
@@ -27,18 +27,18 @@ public class WishListSuite {
     }
 
     @AfterMethod
-    public void singOutAfterTest(){
+    public void singOutAfterTest() {
         mainPage.openMainPage();
         mainPage.clickOnAccountIcon();
         mainPage.clickOnSingOut();
     }
 
     /**
-     *  Check that product was added to the wish list
+     * Check that product was added to the wish list
      */
 
     @Test
-    public void checkAddProductToWishList(){
+    public void checkAddProductToWishList() {
         productPage.openMainPage();
         productPage.clickOnClothingMenuButton();
         productPage.clickOnNewInClothingMenuButton();
@@ -51,12 +51,12 @@ public class WishListSuite {
     }
 
     /**
-     *  check that product can be added to wish list from Category page and check removing
-     *  from wish list
+     * check that product can be added to wish list from Category page and check removing
+     * from wish list
      */
 
     @Test
-    public void checkAddToWishListFromCategoryPage(){
+    public void checkAddToWishListFromCategoryPage() {
         productCategoryPage.openShoesCategoryPage();
         productCategoryPage.clickOnWishListFirstProduct();
         String productTitle = productCategoryPage.grabTextProductTitle();
@@ -68,7 +68,7 @@ public class WishListSuite {
     }
 
     @AfterSuite
-    public void quitDriverAfterSuite(){
+    public void quitDriverAfterSuite() {
         mainPage.getDriver().quit();
     }
 }

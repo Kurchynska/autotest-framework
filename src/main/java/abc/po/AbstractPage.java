@@ -3,6 +3,7 @@ package abc.po;
 import abc.utils.DriverManager;
 import abc.utils.PropertiesManager;
 import lombok.Data;
+import lombok.extern.java.Log;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 @Data
+@Log
 public abstract class AbstractPage {
 
     private WebDriver driver = DriverManager.initDriver();
@@ -33,7 +35,7 @@ public abstract class AbstractPage {
     private WebElement clothingMenuButton;
 
     @FindBy(how = How.XPATH,
-            using = ".//a[@href = 'http://www.asos.com/women/new-in/new-in-clothing/cat/?cid=2623&nlid=ww|clothing|shop+by+product']")
+            using = ".//div[@class='headroom headroom--unfixed']//nav/div/div[3]/div/div[2]/div/section/div[2]/ul/li/a")
     private WebElement newInClothingMenuButton;
 
     @FindBy(how = How.CSS, using = "button[data-id='0edf7894-4f2f-42fb-896d-3e91a01704b1']")
@@ -50,6 +52,10 @@ public abstract class AbstractPage {
     public void clickOnClothingMenuButton() {
         clothingMenuButton.click();
         waitAllLoad(5);
+    }
+
+    public String getTextFromSingOutLink() {
+        return singOutLink.getText();
     }
 
     public void clickOnNewInClothingMenuButton() {
@@ -89,16 +95,16 @@ public abstract class AbstractPage {
     }
 
     public void openShoesCategoryPage() {
-        this.openMainPage();
-        this.clickOnShoesMenuButton();
-        this.clickOnNewInShoesMenuButton();
+        openMainPage();
+        clickOnShoesMenuButton();
+        clickOnNewInShoesMenuButton();
     }
 
-    public static void waitAllLoad(int time){
+    public static void waitAllLoad(int time) {
         try {
-            Thread.sleep(time*1000);
+            Thread.sleep(time * 1000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.severe(String.format("Can't wait InterruptedException"));
         }
     }
 }

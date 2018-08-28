@@ -15,7 +15,7 @@ public class WishListPage extends AbstractPage {
     @FindBy(how = How.XPATH, using = ".//*[@class='bag-item-remove-holder']/button")
     private WebElement deleteButtonWishList;
 
-    public void deleteFirstProductInWishList(){
+    public void deleteFirstProductInWishList() {
         deleteButtonWishList.click();
         waitAllLoad(5);
     }

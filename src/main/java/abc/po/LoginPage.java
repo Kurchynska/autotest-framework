@@ -12,33 +12,33 @@ public class LoginPage extends AbstractPage {
     @FindBy(how = How.NAME, using = "Password")
     private WebElement passwordField;
 
-    @FindBy(how = How.CSS, using ="p[class='qa-use-email last-child']")
+    @FindBy(how = How.CSS, using = "p[class='qa-use-email last-child']")
     private WebElement loginTabTitle;
 
     @FindBy(how = How.ID, using = "signin")
-    private  WebElement signinButton;
+    private WebElement signinButton;
 
     @FindBy(how = How.CLASS_NAME, using = "error-block")
-    private  WebElement loginErrorMessageBlock;
+    private WebElement loginErrorMessageBlock;
 
-    public String getTextFromLoginTabTitle(){
+    public String getTextFromLoginTabTitle() {
         return loginTabTitle.getText();
     }
 
-    public void fillLoginField(String login){
+    public void fillLoginField(String login) {
         loginField.sendKeys(login);
     }
 
-    public void fillPasswordField(String password){
+    public void fillPasswordField(String password) {
         passwordField.sendKeys(password);
     }
 
-    public void clickOnSigninButton(){
+    public void clickOnSigninButton() {
         signinButton.click();
         waitAllLoad(5);
     }
 
-    public WebElement getLoginErrorMessageBlock(){
+    public WebElement getLoginErrorMessageBlock() {
         return loginErrorMessageBlock;
     }
 }
