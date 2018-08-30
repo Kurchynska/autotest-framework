@@ -1,20 +1,10 @@
 package abc.po;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 
-import java.util.concurrent.TimeUnit;
-
-@Data
-@NoArgsConstructor
-public class LoginPage {
-
-    private WebDriver driver;
+public class LoginPage extends AbstractPage {
 
     @FindBy(how = How.NAME, using = "Username")
     private WebElement loginField;
@@ -22,41 +12,33 @@ public class LoginPage {
     @FindBy(how = How.NAME, using = "Password")
     private WebElement passwordField;
 
-    @FindBy(how = How.CSS, using ="p[class='qa-use-email last-child']")
+    @FindBy(how = How.CSS, using = "p[class='qa-use-email last-child']")
     private WebElement loginTabTitle;
 
     @FindBy(how = How.ID, using = "signin")
-    private  WebElement signinButton;
+    private WebElement signinButton;
 
     @FindBy(how = How.CLASS_NAME, using = "error-block")
-    private  WebElement loginErrorMessageBlock;
+    private WebElement loginErrorMessageBlock;
 
-    public LoginPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
-
-    public String getTextFromLoginTabTitle(){
+    public String getTextFromLoginTabTitle() {
         return loginTabTitle.getText();
     }
 
-    public void fillLoginField(String login){
+    public void fillLoginField(String login) {
         loginField.sendKeys(login);
     }
 
-    public void fillPasswordField(String password){
+    public void fillPasswordField(String password) {
         passwordField.sendKeys(password);
     }
 
-    public void clickOnSigninButton(){
+    public void clickOnSigninButton() {
         signinButton.click();
-        driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+        waitAllLoad(5);
     }
 
-    public boolean assertLoginErrorMessageDisplayed(){
-        return loginErrorMessageBlock.isDisplayed();
+    public WebElement getLoginErrorMessageBlock() {
+        return loginErrorMessageBlock;
     }
-
-
-
 }

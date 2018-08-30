@@ -1,8 +1,9 @@
 package abc.po;
 
+import abc.utils.DriverManager;
 import abc.utils.PropertiesManager;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,11 +11,10 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 @Data
-@NoArgsConstructor
+@Log
 public abstract class AbstractPage {
 
-    protected WebDriver driver;
-    private PropertiesManager propertiesManager = new PropertiesManager();
+    private WebDriver driver = DriverManager.initDriver();
 
     @FindBy(how = How.CSS, using = "button[data-testid='accountIcon']")
     private WebElement accountIcon;
@@ -35,60 +35,76 @@ public abstract class AbstractPage {
     private WebElement clothingMenuButton;
 
     @FindBy(how = How.XPATH,
-            using = ".//*[@id='chrome-sticky-header']//nav/div/div[3]/div[2]/div/section/div[2]/ul/li/a")
+            using = ".//div[@class='headroom headroom--unfixed']//nav/div/div[3]/div/div[2]/div/section/div[2]/ul/li/a")
     private WebElement newInClothingMenuButton;
 
-    public AbstractPage(WebDriver driver) {
-        this.driver = driver;
+    @FindBy(how = How.CSS, using = "button[data-id='0edf7894-4f2f-42fb-896d-3e91a01704b1']")
+    private WebElement shoesMenuButton;
+
+    @FindBy(how = How.XPATH,
+            using = ".//div[@id='chrome-sticky-header']/div[2]/nav/div/div[4]/div[2]/div/section/div[2]/ul/li[2]/a")
+    private WebElement newInShoesMenuButton;
+
+    public AbstractPage() {
         PageFactory.initElements(driver, this);
     }
 
-    public void clickOnClothingMenuButton(){
+    public void clickOnClothingMenuButton() {
         clothingMenuButton.click();
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        waitAllLoad(5);
     }
 
-    public void clickOnNewInClothingMenuButton(){
+    public String getTextFromSingOutLink() {
+        return singOutLink.getText();
+    }
+
+    public void clickOnNewInClothingMenuButton() {
         newInClothingMenuButton.click();
     }
 
-    public void openLandingPage() {
-        driver.get(propertiesManager.getDataFromPropertyFile().getProperty("landing"));
+    public void openMainPage() {
+        driver.get(PropertiesManager.getPropertyByKey("landing"));
     }
 
     public void clickOnSingInLink() {
+        waitAllLoad(5);
         singInLink.click();
     }
 
     public void clickOnAccountIcon() {
         accountIcon.click();
-        try {
-            Thread.sleep(5000);                        //TODO: need to change to explicity wait
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void clickOnMyAccountPageLink() {
-        myAccountPageLink.click();
+        waitAllLoad(5);
     }
 
     public void clickOnWishListIcon() {
         wishListIcon.click();
-        try {
-            Thread.sleep(5000);                  //TODO: need to change to explicity wait
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        waitAllLoad(5);
     }
 
     public void clickOnSingOut() {
         singOutLink.click();
     }
 
+    public void clickOnShoesMenuButton() {
+        shoesMenuButton.click();
+        waitAllLoad(5);
+    }
 
+    public void clickOnNewInShoesMenuButton() {
+        newInShoesMenuButton.click();
+    }
+
+    public void openShoesCategoryPage() {
+        openMainPage();
+        clickOnShoesMenuButton();
+        clickOnNewInShoesMenuButton();
+    }
+
+    public static void waitAllLoad(int time) {
+        try {
+            Thread.sleep(time * 1000);
+        } catch (InterruptedException e) {
+            log.severe(String.format("Can't wait InterruptedException"));
+        }
+    }
 }

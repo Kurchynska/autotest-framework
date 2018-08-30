@@ -1,39 +1,35 @@
 package abc.utils;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import lombok.extern.java.Log;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 @Data
-@NoArgsConstructor
+@Log
 public class PropertiesManager {
 
-    public Properties getDataFromPropertyFile() {
+    private static final String PROPERTY_PATH = "props";
 
+    private PropertiesManager(){
+
+    }
+
+    public static Properties getDataFromPropertyFile() {
+
+        String propertyFile = System.getProperty(PROPERTY_PATH);
         Properties property = new Properties();
-        FileInputStream objFile = null;
-        try {
-            objFile = new FileInputStream("C:\\lesson10\\src\\main\\resources\\prop.properties");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-
-            property.load(objFile);
-
+        try (InputStream input = PropertiesManager.class.getClassLoader().getResourceAsStream(propertyFile)) {
+            property.load(input);
         } catch (IOException e) {
-
-            System.out.println(e.getMessage());
-
+            log.severe(String.format("Can't read file %s", propertyFile));
             e.printStackTrace();
-
         }
         return property;
     }
 
-
+    public static String getPropertyByKey(String propertyKey){
+        return getDataFromPropertyFile().getProperty(propertyKey);
+    }
 }
